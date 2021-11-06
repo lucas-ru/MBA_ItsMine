@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mba_its_mine/NfcManager/nfc_writer.dart';
+
+import 'NfcManager/nfc_reader.dart';
+import 'object_profile.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -20,7 +24,10 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color(0xff6c5ce7),
         onPressed: () {
-          // TODO route to add object
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NfcWriter()),
+          );
         },
         label: Text("Ajouter un objet"),
         shape: RoundedRectangleBorder(
@@ -41,7 +48,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
                         side: BorderSide(width: 2, color: Color(0xffa29bfe)) ),
-                      onPressed: () => {},
+                      onPressed: () => {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NfcReader()),
+                      )
+                      },
                       child: Text("Scanner un objet",style: TextStyle(color: Color(0xff6c5ce7)),))
                 ],
               ),
@@ -62,7 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () => {
-                      // TODO Go to route
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ObjectProfile()),
+                      )
                     },
                     child: Card(
                       clipBehavior: Clip.antiAlias,
@@ -85,7 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     onTap: () => {
-                      // TODO Go to route
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ObjectProfile()),
+                      )
                     },
                     child: Card(
                       clipBehavior: Clip.antiAlias,
@@ -108,7 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     onTap: () => {
-                      // TODO Go to route
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ObjectProfile()),
+                      )
                     },
                     child: Card(
                       clipBehavior: Clip.antiAlias,
@@ -131,7 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     onTap: () => {
-                      // TODO Go to route
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ObjectProfile()),
+                      )
                     },
                     child: Card(
                       clipBehavior: Clip.antiAlias,
@@ -154,7 +178,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     onTap: () => {
-                      // TODO Go to route
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ObjectProfile()),
+                      )
                     },
                     child: Card(
                       clipBehavior: Clip.antiAlias,
