@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load UnsplashImage');
+      throw Exception('Failed to load Object');
     }
   }
 
