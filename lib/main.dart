@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:http/http.dart' as http;
+import 'package:mba_its_mine/image.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -7,6 +12,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+
 
   // This widget is the root of your application.
   @override
@@ -51,6 +58,28 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchImage();
+  }
+
+  Future<List<Object>> fetchImage() async {
+    final response = await http
+        .get(Uri.parse('https://itsmineapi.herokuapp.com/nfc-objects/'));
+    print(response);
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(List<Object>.from(jsonDecode(response.body).map((i) => Object.fromJson(i))));
+      return List<Object>.from(jsonDecode(response.body).map((i) => Object.fromJson(i)));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load UnsplashImage');
+    }
+  }
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -61,6 +90,34 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
+  late String uploadURL;
+
+  // Upload(imageFile) async {
+  //   var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+  //   var length = await imageFile.length();
+  //
+  //   var uri = Uri.parse(uploadURL);
+  //
+  //   var request = new http.MultipartRequest("POST", uri);
+  //   var multipartFile = new http.MultipartFile('file', stream, length,
+  //       filename: basename(imageFile.path));
+  //   //contentType: new MediaType('image', 'png'));
+  //
+  //   request.files.add(multipartFile);
+  //   var response = await request.send();
+  //   print(response.statusCode);
+  //   response.stream.transform(utf8.decoder).listen((value) {
+  //     print(value);
+  //   });
+  // }
+  //
+  // Future<String?> uploadImage(filename, url) async {
+  //   var request = http.MultipartRequest('POST', Uri.parse(url));
+  //   request.files.add(await http.MultipartFile.fromPath('picture', filename));
+  //   var res = await request.send();
+  //   return res.reasonPhrase;
+  // }
 
   @override
   Widget build(BuildContext context) {
