@@ -3,6 +3,7 @@ import 'package:mba_its_mine/NfcManager/nfc_writer.dart';
 
 import 'NfcManager/nfc_reader.dart';
 import 'object_profile.dart';
+import 'package:http/http.dart' as http;
 
 
 class MyHomePage extends StatefulWidget {
@@ -16,6 +17,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+
+  Future<http.Response> fetchAlbum() {
+    return http.get(Uri.parse('http://localhost:1337/images'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: OutlinedButton.styleFrom(
                         side: BorderSide(width: 2, color: Color(0xffa29bfe)) ),
                       onPressed: () => {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => NfcReader()),
-                      )
+                      fetchAlbum()
                       },
                       child: Text("Scanner un objet",style: TextStyle(color: Color(0xff6c5ce7)),))
                 ],

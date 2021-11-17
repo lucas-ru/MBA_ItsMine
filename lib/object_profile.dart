@@ -18,7 +18,7 @@ class _ObjectProfileState extends State<ObjectProfile> {
 
     return Scaffold(
       body: Center(
-        child: Text("Mon objet"),
+        child: Text('Mon Object'),
       )
     );
   }
