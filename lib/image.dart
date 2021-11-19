@@ -20,13 +20,13 @@ class Object {
     required this.images,
   });
 
-  final int id;
-  final String name;
-  final String info;
-  final DateTime publishedAt;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final List<Image> images;
+  final int? id;
+  final String? name;
+  final String? info;
+  final DateTime? publishedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final List<Image>? images;
 
   factory Object.fromJson(Map<String, dynamic> json) => Object(
     id: json["id"],
@@ -42,10 +42,10 @@ class Object {
     "id": id,
     "name": name,
     "info": info,
-    "published_at": publishedAt.toIso8601String(),
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "images": List<dynamic>.from(images.map((x) => x.toJson())),
+    "published_at": publishedAt!.toIso8601String(),
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
+    "images": List<dynamic>.from(images!.map((x) => x.toJson())),
   };
 }
 
@@ -70,23 +70,23 @@ class Image {
     required this.updatedAt,
   });
 
-  final int id;
-  final String name;
-  final String alternativeText;
-  final String caption;
-  final int width;
-  final int height;
-  final Formats formats;
-  final String hash;
-  final String ext;
-  final String mime;
-  final double size;
-  final String url;
+  final int? id;
+  final String? name;
+  final String? alternativeText;
+  final String? caption;
+  final int? width;
+  final int? height;
+  final Formats? formats;
+  final String? hash;
+  final String? ext;
+  final String? mime;
+  final double? size;
+  final String? url;
   final dynamic previewUrl;
-  final String provider;
+  final String? provider;
   final dynamic providerMetadata;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   factory Image.fromJson(Map<String, dynamic> json) => Image(
     id: json["id"],
@@ -115,7 +115,7 @@ class Image {
     "caption": caption,
     "width": width,
     "height": height,
-    "formats": formats.toJson(),
+    "formats": formats!.toJson(),
     "hash": hash,
     "ext": ext,
     "mime": mime,
@@ -124,8 +124,8 @@ class Image {
     "previewUrl": previewUrl,
     "provider": provider,
     "provider_metadata": providerMetadata,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
   };
 }
 
@@ -137,10 +137,10 @@ class Formats {
     required this.thumbnail,
   });
 
-  final Large large;
-  final Large small;
-  final Large medium;
-  final Large thumbnail;
+  final Large? large;
+  final Large? small;
+  final Large? medium;
+  final Large? thumbnail;
 
   factory Formats.fromJson(Map<String, dynamic> json) => Formats(
     large: Large.fromJson(json["large"]),
@@ -150,10 +150,10 @@ class Formats {
   );
 
   Map<String, dynamic> toJson() => {
-    "large": large.toJson(),
-    "small": small.toJson(),
-    "medium": medium.toJson(),
-    "thumbnail": thumbnail.toJson(),
+    "large": large!.toJson(),
+    "small": small!.toJson(),
+    "medium": medium!.toJson(),
+    "thumbnail": thumbnail!.toJson(),
   };
 }
 

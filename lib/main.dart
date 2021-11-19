@@ -1,12 +1,18 @@
 import 'dart:convert';
+import 'dart:html';
+import 'dart:html';
+import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mba_its_mine/image.dart';
+import 'package:dio/dio.dart';
 
-
-void main() {
+Future main() async{
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -57,21 +63,33 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final Url_API = dotenv.env['URL_API'];
+
+  Future<FormData> FormData1(String Path, String nameImage) async {
+    return FormData.fromMap({
+      'image': [
+        await MultipartFile.fromFile(
+          Path,
+          filename: nameImage,
+        ),
+      ]
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     fetchImage();
+    uploadData("stiti","informatique","150280","keyword","lucas","lucas");
   }
 
   Future<List<Object>> fetchImage() async {
     final response = await http
-        .get(Uri.parse('https://itsmineapi.herokuapp.com/nfc-objects/'));
-    print(response);
+        .get(Uri.parse(Url_API!));
+    print(response.body);
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print(List<Object>.from(jsonDecode(response.body).map((i) => Object.fromJson(i))));
       return List<Object>.from(jsonDecode(response.body).map((i) => Object.fromJson(i)));
     } else {
       // If the server did not return a 200 OK response,
@@ -112,12 +130,62 @@ class _MyHomePageState extends State<MyHomePage> {
   //   });
   // }
   //
-  // Future<String?> uploadImage(filename, url) async {
+
+  Future<http.Response> uploadData(String name, String info, String uuid, String password, String created_by, String updated_by) {
+    return http.post(
+      Uri.parse(Url_API!),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'name': name,
+        'info': info,
+        'uuid': uuid,
+        'password': password,
+        'created_by': created_by,
+        'updated_by': updated_by,
+      }),
+    );
+  }
+
+  // From path
+  Future<String?> uploadImage(filename) async {
+    var request = http.MultipartRequest('POST', Uri.parse(Url_API!));
+    request.files.add(await http.MultipartFile.fromPath('picture', filename));
+    var res = await request.send();
+    return res.reasonPhrase;
+  }
+
+  // From Bytes
+  // Future<String> uploadImageBytes(filepath, url) async {
   //   var request = http.MultipartRequest('POST', Uri.parse(url));
-  //   request.files.add(await http.MultipartFile.fromPath('picture', filename));
+  //   request.files.add(
+  //       http.MultipartFile.fromBytes(
+  //           'picture',
+  //           File(filepath).readAsBytesSync(),
+  //           filename: filepath.split("/").last
+  //       )
+  //   );
   //   var res = await request.send();
-  //   return res.reasonPhrase;
   // }
+
+  // with dio
+  Future<String?> uploadImageDio(filename) async {
+    var dio = Dio();
+    Response response;
+
+    response = await dio.post(
+      //"/upload",
+      Url_API!,
+      data: await FormData1("path1","nom1"),
+      onSendProgress: (received, total) {
+        if (total != -1) {
+          print((received / total * 100).toStringAsFixed(0) + '%');
+        }
+      },
+    );
+    print(response);
+  }
 
   @override
   Widget build(BuildContext context) {
