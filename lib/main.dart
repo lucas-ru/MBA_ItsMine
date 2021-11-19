@@ -67,7 +67,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<FormData> FormData1(String Path, String nameImage) async {
     return FormData.fromMap({
-      'image': [
+      'images': [
+        await MultipartFile.fromFile(
+          Path,
+          filename: nameImage,
+        ),
+      ]
+    });
+  }
+
+  Future<FormData> FormData2(String name, String info, String uuid, String password, String created_by, String updated_by, String Path, String nameImage) async {
+    return FormData.fromMap({
+      'name': name,
+      'info': info,
+      'uuid': uuid,
+      'password': password,
+      'created_by': created_by,
+      'updated_by': updated_by,
+      'images': [
         await MultipartFile.fromFile(
           Path,
           filename: nameImage,
@@ -170,6 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
 
   // with dio
+  // possible to send FormData2
   Future<String?> uploadImageDio(filename) async {
     var dio = Dio();
     Response response;
