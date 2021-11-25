@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mba_its_mine/add_pictures.dart';
 
 
 class AddObject extends StatefulWidget {
@@ -151,7 +152,12 @@ class _AddObjectState extends State<AddObject> {
                               shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(8.0))
                               ),
-                              onPressed: () => {}
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AddPictures()),
+                                );
+                              }
                           )
                         ],
                       )
