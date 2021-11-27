@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mba_its_mine/add_password.dart';
 
 
 class AddPictures extends StatefulWidget {
-  const AddPictures({Key? key}) : super(key: key);
+  const AddPictures({Key? key, required this.name, required this.description}) : super(key: key);
+
+  final String name;
+
+  final String description;
 
   @override
   State<AddPictures> createState() => _AddPicturesState();
 }
 
 class _AddPicturesState extends State<AddPictures> {
+
+  XFile? file;
+
+  void _choose() async {
+    file = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +126,7 @@ class _AddPicturesState extends State<AddPictures> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddPassword()),
+                            MaterialPageRoute(builder: (context) => AddPassword(name: widget.name, description: widget.description, path: file)),
                           );
                         }
                     )

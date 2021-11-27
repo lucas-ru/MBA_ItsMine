@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'NfcManager/nfc_writer.dart';
 
 
 class AddPassword extends StatefulWidget {
-  const AddPassword({Key? key}) : super(key: key);
+  const AddPassword({Key? key, required this.name, required this.description, required this.path}) : super(key: key);
+
+  final String name;
+
+  final String description;
+
+  final XFile? path;
 
   @override
   State<AddPassword> createState() => _AddPasswordState();
 }
 
 class _AddPasswordState extends State<AddPassword> {
+
+  TextEditingController controller = new TextEditingController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +90,7 @@ class _AddPasswordState extends State<AddPassword> {
                               children: [
                                 const Align(child: Text("Mot de passe"), alignment: Alignment.topLeft,),
                                 TextFormField(
+                                  controller: controller,
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
                                   ),
@@ -105,10 +123,10 @@ class _AddPasswordState extends State<AddPassword> {
                               borderRadius: BorderRadius.all(Radius.circular(8.0))
                           ),
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => AddPictures()),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => NfcWriter(name: widget.name, description: widget.description, path: widget.path, password: controller.value.text)),
+                            );
                           }
                       )
                     ],

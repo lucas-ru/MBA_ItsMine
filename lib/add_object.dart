@@ -11,6 +11,17 @@ class AddObject extends StatefulWidget {
 
 class _AddObjectState extends State<AddObject> {
 
+
+  TextEditingController controller = new TextEditingController();
+  TextEditingController controller2 = new TextEditingController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    controller2.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -117,6 +128,7 @@ class _AddObjectState extends State<AddObject> {
                           children: [
                             const Align(child: Text("Nom de l'objet"), alignment: Alignment.topLeft,),
                             TextFormField(
+                              controller: controller,
                               decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
                               ),
@@ -130,6 +142,7 @@ class _AddObjectState extends State<AddObject> {
                           children: [
                             const Align(child: Text("Information en cas de perte"), alignment: Alignment.topLeft,),
                             TextFormField(
+                              controller: controller2,
                               keyboardType: TextInputType.multiline,
                               textInputAction: TextInputAction.newline,
                               minLines: 3,
@@ -155,7 +168,7 @@ class _AddObjectState extends State<AddObject> {
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => AddPictures()),
+                                  MaterialPageRoute(builder: (context) => AddPictures(name: controller.value.text,description: controller2.value.text)),
                                 );
                               }
                           )
