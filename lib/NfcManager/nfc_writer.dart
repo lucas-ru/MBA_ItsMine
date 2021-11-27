@@ -117,7 +117,7 @@ class NfcWriterState extends State<NfcWriter> {
       }
 
       NdefMessage message = NdefMessage([
-        NdefRecord.createText('uid'),
+        NdefRecord.createText('test'),
       ]);
 
       try {

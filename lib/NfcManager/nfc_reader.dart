@@ -1,5 +1,5 @@
 
-import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -98,11 +98,12 @@ class NfcReaderState extends State<NfcReader> {
 
   void _tagRead() {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      var data = utf8.decode(tag.data["ndef"]["cachedMessage"]["records"][0]["payload"]).substring(1);
       result.value = tag.data;
       NfcManager.instance.stopSession();
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ObjectProfile()),
+        MaterialPageRoute(builder: (context) => ObjectProfile(uuid: data)),
       );
     });
   }
