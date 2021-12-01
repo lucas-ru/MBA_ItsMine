@@ -5,13 +5,13 @@ import 'NfcManager/nfc_writer.dart';
 
 
 class AddPassword extends StatefulWidget {
-  const AddPassword({Key? key, required this.name, required this.description, required this.path}) : super(key: key);
+  const AddPassword({Key? key, required this.name, required this.description, required this.pictureList}) : super(key: key);
 
   final String name;
 
   final String description;
 
-  final XFile? path;
+  final List<XFile> pictureList;
 
   @override
   State<AddPassword> createState() => _AddPasswordState();
@@ -125,7 +125,7 @@ class _AddPasswordState extends State<AddPassword> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => NfcWriter(name: widget.name, description: widget.description, path: widget.path, password: controller.value.text)),
+                              MaterialPageRoute(builder: (context) => NfcWriter(name: widget.name, description: widget.description, pictureList: widget.pictureList, password: controller.value.text)),
                             );
                           }
                       )

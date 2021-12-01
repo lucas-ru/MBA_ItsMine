@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mba_its_mine/add_password.dart';
+import 'package:http_parser/http_parser.dart';
 
 
 class AddPictures extends StatefulWidget {
@@ -17,12 +21,17 @@ class AddPictures extends StatefulWidget {
 class _AddPicturesState extends State<AddPictures> {
 
   XFile? file;
+  List<XFile> pictureList = [];
 
   void _choose() async {
     file = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
+    setState(() {
+      pictureList.add(file!);
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,27 +87,30 @@ class _AddPicturesState extends State<AddPictures> {
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Column(
                       children: [
-                        Expanded(
-                          child: GridView.count(
-                            primary: false,
-                            padding: const EdgeInsets.all(20),
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            crossAxisCount: 2,
-                            children: <Widget>[
-                              Container(
-                                height: 100,
-                                margin: EdgeInsets.only(bottom: 10),
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: NetworkImage("https://via.placeholder.com/150"),
-                                        fit: BoxFit.cover
-                                    )
-                                ),
-                              ),
-                            ],
+                    pictureList.length > 0 ?
+                    Expanded(
+                      child: ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                        itemCount: pictureList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(pictureList[index].path)
+                              )
+                            ),
+                          );
+                        }
+                  ),
+                    ): Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage("https://via.placeholder.com/150")
+                            )
                           ),
-                        ),
+                        )),
                         MaterialButton(
                             color: Color(0xff6c5ce7),
                             textColor: Colors.white,
@@ -106,7 +118,7 @@ class _AddPicturesState extends State<AddPictures> {
                             shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(8.0))
                             ),
-                            onPressed: () {}
+                            onPressed: () => _choose()
                         )
                       ],
                     ),
@@ -115,7 +127,7 @@ class _AddPicturesState extends State<AddPictures> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Etape 1/3', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                    Text('Etape 2/3', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                     MaterialButton(
                         color: Color(0xff6c5ce7),
                         textColor: Colors.white,
@@ -126,7 +138,7 @@ class _AddPicturesState extends State<AddPictures> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddPassword(name: widget.name, description: widget.description, path: file)),
+                            MaterialPageRoute(builder: (context) => AddPassword(name: widget.name, description: widget.description, pictureList: pictureList)),
                           );
                         }
                     )

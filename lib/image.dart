@@ -14,6 +14,7 @@ class Object {
     required this.id,
     required this.name,
     required this.info,
+    this.uuid,
     required this.publishedAt,
     required this.createdAt,
     required this.updatedAt,
@@ -23,6 +24,7 @@ class Object {
   final int? id;
   final String? name;
   final String? info;
+  final String? uuid;
   final DateTime? publishedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -32,6 +34,7 @@ class Object {
     id: json["id"],
     name: json["name"],
     info: json["info"],
+    uuid: json["uuid"],
     publishedAt: DateTime.parse(json["published_at"]),
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -42,6 +45,7 @@ class Object {
     "id": id,
     "name": name,
     "info": info,
+    "uuid": uuid,
     "published_at": publishedAt!.toIso8601String(),
     "created_at": createdAt!.toIso8601String(),
     "updated_at": updatedAt!.toIso8601String(),
@@ -57,7 +61,6 @@ class Image {
     required this.caption,
     required this.width,
     required this.height,
-    required this.formats,
     required this.hash,
     required this.ext,
     required this.mime,
@@ -76,7 +79,6 @@ class Image {
   final String? caption;
   final int? width;
   final int? height;
-  final Formats? formats;
   final String? hash;
   final String? ext;
   final String? mime;
@@ -95,7 +97,6 @@ class Image {
     caption: json["caption"],
     width: json["width"],
     height: json["height"],
-    formats: Formats.fromJson(json["formats"]),
     hash: json["hash"],
     ext: json["ext"],
     mime: json["mime"],
@@ -115,7 +116,6 @@ class Image {
     "caption": caption,
     "width": width,
     "height": height,
-    "formats": formats!.toJson(),
     "hash": hash,
     "ext": ext,
     "mime": mime,
