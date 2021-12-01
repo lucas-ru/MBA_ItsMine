@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mba_its_mine/NfcManager/nfc_writer.dart';
 
 import 'NfcManager/nfc_reader.dart';
+import 'add_object.dart';
 import 'object_profile.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => NfcWriter()),
+            MaterialPageRoute(builder: (context) => AddObject()),
           );
         },
         label: Text("Ajouter un objet"),
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 25),
               child: Align(
                 alignment: Alignment.topLeft,

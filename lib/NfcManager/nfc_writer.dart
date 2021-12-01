@@ -1,19 +1,78 @@
 
+import 'dart:convert';
+import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:mba_its_mine/object_profile.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 
 
 class NfcWriter extends StatefulWidget {
+  const NfcWriter({Key? key, required this.name, required this.description, required this.path, required this.password}) : super(key: key);
+
+  final String name;
+
+  final String description;
+
+  final XFile? path;
+
+  final String password;
+
   @override
   State<StatefulWidget> createState() => NfcWriterState();
 }
 
 class NfcWriterState extends State<NfcWriter> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
+  final Url_API = dotenv.env['URL_API'];
+
+  Future<http.Response> uploadData(String name, String info, String uuid, String password, String created_by, String updated_by) {
+    return http.post(
+      Uri.parse(Url_API!),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'name': name,
+        'info': info,
+        'uuid': uuid,
+        'password': password,
+        'created_by': created_by,
+        'updated_by': updated_by,
+      }),
+    );
+  }
+
+
+  void _upload(XFile file) async {
+    String fileName = file.path.split('/').last;
+    print(fileName);
+
+    FormData data = FormData.fromMap({
+      "ref": "nfc-object",
+      "refId": "3",
+      "files": await MultipartFile.fromFile(
+        file.path,
+        filename: fileName,
+      ),
+      "field": "images"
+    });
+
+
+    Dio dio = new Dio();
+
+    dio.post("https://itsmineapi.herokuapp.com/upload/", data: data).then((response) {
+      var jsonResponse = jsonDecode(response.toString());
+      var testData = jsonResponse['histogram_counts'].cast<double>();
+      var averageGrindSize = jsonResponse['average_particle_size'];
+    }).catchError((error) => print(error));
+  }
 
   @override
   void initState() {
