@@ -27,34 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final Url_API = dotenv.env['URL_API'];
 
-  Future<FormData> FormData1(String Path, String nameImage) async {
-    return FormData.fromMap({
-      'images': [
-        await MultipartFile.fromFile(
-          Path,
-          filename: nameImage,
-        ),
-      ]
-    });
-  }
-
-  Future<FormData> FormData2(String name, String info, String uuid, String password, String created_by, String updated_by, String Path, String nameImage) async {
-    return FormData.fromMap({
-      'name': name,
-      'info': info,
-      'uuid': uuid,
-      'password': password,
-      'created_by': created_by,
-      'updated_by': updated_by,
-      'images': [
-        await MultipartFile.fromFile(
-          Path,
-          filename: nameImage,
-        ),
-      ]
-    });
-  }
-
   Future<List<Object>> fetchImage() async {
     final response = await http
         .get(Uri.parse(Url_API!));
@@ -70,129 +42,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
-
-
-  late String uploadURL;
-
-  // Upload(imageFile) async {
-  //   var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-  //   var length = await imageFile.length();
-  //
-  //   var uri = Uri.parse(uploadURL);
-  //
-  //   var request = new http.MultipartRequest("POST", uri);
-  //   var multipartFile = new http.MultipartFile('file', stream, length,
-  //       filename: basename(imageFile.path));
-  //   //contentType: new MediaType('image', 'png'));
-  //
-  //   request.files.add(multipartFile);
-  //   var response = await request.send();
-  //   print(response.statusCode);
-  //   response.stream.transform(utf8.decoder).listen((value) {
-  //     print(value);
-  //   });
-  // }
-  //
-
-  Future<http.Response> uploadData(String name, String info, String uuid, String password, String created_by, String updated_by) {
-    return http.post(
-      Uri.parse(Url_API!),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'name': name,
-        'info': info,
-        'uuid': uuid,
-        'password': password,
-        'created_by': created_by,
-        'updated_by': updated_by,
-      }),
-    );
-  }
-
-  // From path
-  Future<String?> uploadImage(filename) async {
-    var request = http.MultipartRequest('POST', Uri.parse(Url_API!));
-    request.files.add(await http.MultipartFile.fromPath('picture', filename));
-    var res = await request.send();
-    return res.reasonPhrase;
-  }
-
-  // From Bytes
-  // Future<String> uploadImageBytes(filepath, url) async {
-  //   var request = http.MultipartRequest('POST', Uri.parse(url));
-  //   request.files.add(
-  //       http.MultipartFile.fromBytes(
-  //           'picture',
-  //           File(filepath).readAsBytesSync(),
-  //           filename: filepath.split("/").last
-  //       )
-  //   );
-  //   var res = await request.send();
-  // }
-
-  // with dio
-  // possible to send FormData2
-  Future<String?> uploadImageDio(filename) async {
-    var dio = Dio();
-    Response response;
-
-    response = await dio.post(
-      //"/upload",
-      Url_API!,
-      data: await FormData1("path1","nom1"),
-      onSendProgress: (received, total) {
-        if (total != -1) {
-          print((received / total * 100).toStringAsFixed(0) + '%');
-        }
-      },
-    );
-    print(response);
-  }
-
-  void _choose() async {
-    XFile? file;
-    file = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-    );
-    if (file != null) {
-      //haveImg = true;
-      _upload(file);
-      setState(() {});
-    }
-  }
-
-  void _upload(XFile file) async {
-    String fileName = file.path.split('/').last;
-    print(fileName);
-
-    FormData data = FormData.fromMap({
-      "ref": "nfc-object",
-      "refId": "3",
-      "files": await MultipartFile.fromFile(
-        file.path,
-        filename: fileName,
-      ),
-      "field": "images"
-    });
-
-
-    Dio dio = new Dio();
-
-    dio.post("https://itsmineapi.herokuapp.com/upload/", data: data).then((response) {
-      var jsonResponse = jsonDecode(response.toString());
-      var testData = jsonResponse['histogram_counts'].cast<double>();
-      var averageGrindSize = jsonResponse['average_particle_size'];
-    }).catchError((error) => print(error));
-  }
-
   @override
   void initState() {
     super.initState();
     fetchImage();
-
   }
 
   @override

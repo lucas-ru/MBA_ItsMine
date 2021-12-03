@@ -99,12 +99,12 @@ class NfcReaderState extends State<NfcReader> {
 
   void _tagRead() {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      var data = utf8.decode(tag.data["ndef"]["cachedMessage"]["records"][0]["payload"]).substring(1);
+      String data = utf8.decode(tag.data["ndef"]["cachedMessage"]["records"][0]["payload"]).substring(1);
       result.value = tag.data;
       NfcManager.instance.stopSession();
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ObjectProfile(uuid: data)),
+        MaterialPageRoute(builder: (context) => ObjectProfile(uuid: data.substring(2))),
       );
     });
   }

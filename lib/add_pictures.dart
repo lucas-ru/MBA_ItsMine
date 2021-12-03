@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -87,17 +88,21 @@ class _AddPicturesState extends State<AddPictures> {
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Column(
                       children: [
-                    pictureList.length > 0 ?
+                    pictureList.isNotEmpty ?
                     Expanded(
                       child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.all(8),
                         itemCount: pictureList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
-                            height: 50,
+                            margin: EdgeInsets.symmetric(horizontal: 5),
+                            height: 100,
+                            width: 200,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage(pictureList[index].path)
+                                image: FileImage(File(pictureList[index]!.path)),
+                                fit: BoxFit.cover
                               )
                             ),
                           );
