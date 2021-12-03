@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:mba_its_mine/update_object.dart';
 import 'homepage.dart';
 import 'image.dart';
 
@@ -130,7 +131,10 @@ class ObjectInfo extends StatelessWidget {
               alignment: Alignment.topLeft,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Color(0xff6c5ce7)),
-                    onPressed: () => {},
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UpdateObject(object: img)),
+                    ),
                     child: Text("Modifier l'objet")
                 )
             )

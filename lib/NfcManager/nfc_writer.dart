@@ -117,16 +117,7 @@ class NfcWriterState extends State<NfcWriter> {
     );
   }
 
-  void _tagRead() {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      result.value = tag.data;
-      NfcManager.instance.stopSession();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ObjectProfile()),
-      );
-    });
-  }
+
 
   void _ndefWrite() {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {

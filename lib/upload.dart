@@ -98,6 +98,7 @@ class _UploadState extends State<Upload> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("C'est bientot fini !"),
+
                   SizedBox(
                       width: 200,
                       child: LinearProgressIndicator(
